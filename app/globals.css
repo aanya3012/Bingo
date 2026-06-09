@@ -1,0 +1,132 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 4%;
+    --foreground: 0 0% 95%;
+    --card: 0 0% 7%;
+    --card-foreground: 0 0% 95%;
+    --popover: 0 0% 7%;
+    --popover-foreground: 0 0% 95%;
+    --primary: 347 77% 50%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 0 0% 10%;
+    --secondary-foreground: 0 0% 95%;
+    --muted: 0 0% 12%;
+    --muted-foreground: 0 0% 50%;
+    --accent: 347 77% 50%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 14%;
+    --input: 0 0% 12%;
+    --ring: 347 77% 50%;
+    --radius: 0.5rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+
+  ::selection {
+    background: rgba(225, 29, 72, 0.3);
+  }
+
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: hsl(var(--background));
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: hsl(var(--border));
+    border-radius: 3px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--primary));
+  }
+}
+
+@layer components {
+  .bingo-cell {
+    @apply relative flex items-center justify-center rounded-md border border-border 
+           font-bold text-lg cursor-pointer select-none transition-all duration-200
+           hover:border-crimson-600 hover:bg-crimson-950/30;
+  }
+
+  .bingo-cell.marked {
+    @apply bg-crimson-900/60 border-crimson-600 text-crimson-200;
+  }
+
+  .bingo-cell.new-mark {
+    animation: cell-flash 0.4s ease-out;
+  }
+
+  .bingo-letter {
+    @apply inline-flex items-center justify-center w-10 h-10 rounded-full 
+           font-black text-xl border-2 transition-all duration-300;
+  }
+
+  .bingo-letter.earned {
+    @apply bg-crimson-600 border-crimson-400 text-white shadow-lg;
+    box-shadow: 0 0 20px rgba(225, 29, 72, 0.5);
+  }
+
+  .bingo-letter.unearned {
+    @apply bg-transparent border-border text-muted-foreground;
+  }
+
+  .room-code {
+    @apply font-mono font-black text-2xl tracking-widest text-crimson-400
+           bg-crimson-950/30 border border-crimson-800/50 rounded-lg px-4 py-2;
+  }
+
+  .player-card {
+    @apply flex items-center gap-3 p-3 rounded-lg bg-card border border-border
+           transition-all duration-200;
+  }
+
+  .player-card.current-turn {
+    @apply border-crimson-600/50 bg-crimson-950/20;
+    box-shadow: 0 0 12px rgba(225, 29, 72, 0.2);
+  }
+
+  .chat-message {
+    @apply text-sm leading-relaxed break-words;
+  }
+
+  .chat-message.system {
+    @apply text-muted-foreground italic text-xs;
+  }
+
+  .chat-message.event {
+    @apply text-crimson-400 text-xs font-medium;
+  }
+
+  .glass {
+    @apply bg-card/80 backdrop-blur-sm border border-border;
+  }
+
+  .glow-crimson {
+    box-shadow: 0 0 30px rgba(225, 29, 72, 0.3), 0 0 60px rgba(225, 29, 72, 0.1);
+  }
+}
+
+@keyframes cell-flash {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.15); background: rgba(225, 29, 72, 0.4); }
+  100% { transform: scale(1); }
+}
