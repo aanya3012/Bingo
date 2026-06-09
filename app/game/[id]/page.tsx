@@ -5,7 +5,7 @@ import { useRouter, useParams } from "next/navigation"
 import { motion, AnimatePresence } from "framer-motion"
 import { supabase } from "@/lib/supabase"
 import { sounds } from "@/lib/sounds"
-import { computeMarkedCells, countCompletedLines, getBingoLetters, hasWon, getNextPlayerId, GRID_CONFIG, validateBoard, generateRandomBoard } from "@/lib/game-logic"
+import { computeMarkedCells, countCompletedLines, getBingoLetters, hasWon, getNextPlayerId, validateBoard, generateRandomBoard } from "@/lib/game-logic"
 import { Room, Player, Message, GameMode } from "@/types"
 import { BingoBoard } from "@/components/game/bingo-board"
 import { BoardSetup } from "@/components/game/board-setup"
@@ -15,6 +15,7 @@ import { BingoProgress } from "@/components/game/bingo-progress"
 import { WinScreen } from "@/components/game/win-screen"
 import { Button } from "@/components/ui/button"
 import { Volume2, VolumeX } from "lucide-react"
+import { GRID_CONFIG } from "@/types"
 
 export default function GamePage() {
   const router = useRouter()
