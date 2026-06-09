@@ -73,7 +73,7 @@ export default function HomePage() {
       if (re || !room) { setError("Room not found"); setLoading(false); return }
       if (room.status === "finished") { setError("This game has ended"); setLoading(false); return }
 
-      const { data: existing } = await supabase.from("players").select("id").eq("room_id", room.id)
+      const { data: existing } = await supabase.from("players").select("id, is_spectator").eq("room_id", room.id)
       const activePlayers = existing?.filter(p => !p.is_spectator) ?? []
 
       const avatarColor = AVATAR_COLORS[Math.floor(Math.random() * AVATAR_COLORS.length)]
