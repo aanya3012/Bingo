@@ -9,7 +9,7 @@ import { computeMarkedCells, countCompletedLines, getBingoLetters, hasWon, getNe
 import { Room, Player, Message, GameMode } from "@/types"
 import { BingoBoard } from "@/components/game/bingo-board"
 import { BoardSetup } from "@/components/game/board-setup"
-import { ChatPanel } from "@/components/chat/chat-panel"
+import { FloatingChat } from "@/components/chat/floating-chat"
 import { PlayerList } from "@/components/game/player-list"
 import { BingoProgress } from "@/components/game/bingo-progress"
 import { WinScreen } from "@/components/game/win-screen"
@@ -263,7 +263,7 @@ export default function GamePage() {
               myPlayerId={myPlayer.id}
               mode={room.mode as GameMode}
             />
-            <ChatPanel
+            <FloatingChat
               messages={messages}
               myPlayerId={myPlayer.id}
               players={players}
