@@ -48,9 +48,38 @@ export function countCompletedLines(markedCells: boolean[], mode: GameMode): num
   return lines.filter((line) => line.every((idx) => markedCells[idx])).length
 }
 
-/** Determine which BINGO letters have been earned (classic 5x5 only gets letters) */
-export function getBingoLetters(linesCompleted: number): string[] {
-  return BINGO_LETTERS.slice(0, Math.min(linesCompleted, 5))
+/**
+ * Build the full progress-letter sequence for a mode.
+ *
+ * Rules:
+ *  - First 5 positions always spell B-I-N-G-O (from BINGO_LETTERS).
+ *  - Any extra positions beyond 5 repeat "O" (e.g. chaos needs 7 → BINGOOO).
+ *  - Modes with fewer than 5 lines truncate to that count (e.g. quick needs 3 → BIN).
+ *
+ * Examples:
+ *  quick   (3 lines) → ["B","I","N"]
+ *  classic (5 lines) → ["B","I","N","G","O"]
+ *  chaos   (7 lines) → ["B","I","N","G","O","O","O"]
+ */
+export function getProgressLetters(mode: GameMode): string[] {
+  const { lines } = GRID_CONFIG[mode]
+  return Array.from({ length: lines }, (_, i) =>
+    i < BINGO_LETTERS.length ? BINGO_LETTERS[i] : "O"
+  )
+}
+
+/**
+ * Return the earned subset of the progress sequence based on lines completed.
+ * Now accepts mode so it can build the right-length label sequence.
+ *
+ * ISSUE 2 ROOT CAUSE (old version):
+ *   getBingoLetters(linesCompleted) always sliced BINGO_LETTERS (length 5).
+ *   For chaos mode (7 lines) positions 6 and 7 were never reachable.
+ *   For quick mode (3 lines) positions 4 and 5 were impossible but still shown.
+ */
+export function getBingoLetters(linesCompleted: number, mode: GameMode): string[] {
+  const sequence = getProgressLetters(mode)
+  return sequence.slice(0, Math.min(linesCompleted, sequence.length))
 }
 
 /** Check if a player has won (completed the required number of lines) */

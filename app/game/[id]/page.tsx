@@ -219,7 +219,7 @@ export default function GamePage() {
       if (!player.board) continue
       const marked = computeMarkedCells(player.board, newCalledNumbers)
       const lines = countCompletedLines(marked, currentRoom.mode as GameMode)
-      const letters = getBingoLetters(lines)
+      const letters = getBingoLetters(lines, currentRoom.mode as GameMode)
       const won = hasWon(lines, currentRoom.mode as GameMode)
       const prevLines = player.lines_completed
 
@@ -358,7 +358,10 @@ export default function GamePage() {
         </div>
 
         <div className="flex items-center gap-2 flex-shrink-0">
-          <BingoProgress letters={myPlayer.bingo_letters} />
+          <BingoProgress
+             letters={myPlayer.bingo_letters}
+             mode ={room.mode as GameMode}/> 
+
           <button
             onClick={toggleMute}
             className="p-1.5 rounded-md text-muted-foreground hover:text-foreground transition-colors"

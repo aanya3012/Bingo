@@ -1,20 +1,31 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { BINGO_LETTERS } from "@/types"
+import { GameMode } from "@/types"
+import { getProgressLetters } from "@/lib/game-logic"
 import { cn } from "@/lib/utils"
 
-export function BingoProgress({ letters }: { letters: string[] }) {
-  const earned = new Set(letters)
+interface BingoProgressProps {
+  letters: string[]
+  mode: GameMode
+}
+
+export function BingoProgress({ letters, mode }: BingoProgressProps) {
+  const earnedCount = letters.length
+  const targetLetters = getProgressLetters(mode)
 
   return (
     <div className="flex items-center gap-1">
-      {BINGO_LETTERS.map((letter, i) => {
-        const isEarned = earned.has(letter)
+      {targetLetters.map((letter, i) => {
+        const isEarned = i < earnedCount
+
         return (
           <motion.div
-            key={letter}
-            className={cn("bingo-letter w-7 h-7 text-sm", isEarned ? "earned" : "unearned")}
+            key={`${letter}-${i}`}
+            className={cn(
+              "bingo-letter w-7 h-7 text-sm",
+              isEarned ? "earned" : "unearned"
+            )}
             animate={isEarned ? { scale: [1, 1.3, 1] } : {}}
             transition={{ duration: 0.4, type: "spring" }}
           >
