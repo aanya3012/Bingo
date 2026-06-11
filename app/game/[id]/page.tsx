@@ -46,6 +46,13 @@ export default function GamePage() {
   const playersRef = useRef<Player[]>([])
   const prevCalledRef = useRef<number[]>([])
 
+    // ─── ISSUE 1 FIX: track previous lines_completed per player ───────────────
+  // Key: player.id  Value: last lines_completed value we observed
+  // Without this, the condition `updated.lines_completed > 0` is true for every
+  // player update after they've completed even one line, firing the sound on
+  // every subsequent number call even when their line count didn't change.
+  const prevLinesRef = useRef<Record<string, number>>({})
+
   // Keep refs in sync with state
   useEffect(() => { roomRef.current = room }, [room])
   useEffect(() => { playersRef.current = players }, [players])
@@ -127,15 +134,23 @@ export default function GamePage() {
           // Use roomRef.current here — NOT the `room` state variable,
           // which would be stale inside this closure
           const currentRoom = roomRef.current
-          if (updated.lines_completed > 0 && currentRoom) {
-            if (hasWon(updated.lines_completed, currentRoom.mode as GameMode)) {
-              setWinner(updated)
-              sounds.victory()
-            } else {
-              sounds.lineCompleted()
-            }
-          }
-        }
+
+          const prevLines = prevLinesRef.current[updated.id] ?? 0
+          const newLines = updated.lines_completed
+
+              if (newLines > prevLines && currentRoom) {
+              prevLinesRef.current[updated.id] = newLines
+
+                  if (hasWon(newLines, currentRoom.mode as GameMode)) {
+                    setWinner(updated)
+                    sounds.victory()
+                  } else {
+                    sounds.lineCompleted()
+                  }
+              } else {
+                prevLinesRef.current[updated.id] = newLines
+              }
+              }
       )
       .on(
         "postgres_changes",

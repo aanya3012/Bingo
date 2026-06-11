@@ -36,10 +36,11 @@ export function BingoBoard({ board, markedCells, calledNumbers, isMyTurn, mode, 
         )}
       </div>
 
-      <div
-        className="grid gap-1.5 flex-1"
-        style={{ gridTemplateColumns: `repeat(${size}, 1fr)` }}
-      >
+      <div className="flex-1 flex items-center justify-center min-h-0">
+        <div
+           className="grid gap-1 w-full max-w-[90vmin] aspect-square"
+           style={{ gridTemplateColumns: `repeat(${size}, 1fr)` }}
+         >
         {board.map((number, idx) => {
           const isMarked = markedCells[idx] ?? false
           const isCalled = calledNumbers.includes(number)
@@ -50,7 +51,7 @@ export function BingoBoard({ board, markedCells, calledNumbers, isMyTurn, mode, 
             <motion.button
               key={idx}
               className={cn(
-                "bingo-cell aspect-square text-sm md:text-base",
+               "bingo-cell aspect-square text-[10px] sm:text-xs md:text-base" ,
                 isMarked && "marked",
                 canCall && "hover:scale-105 active:scale-95",
                 !canCall && !isMarked && "opacity-80",
@@ -74,6 +75,7 @@ export function BingoBoard({ board, markedCells, calledNumbers, isMyTurn, mode, 
             </motion.button>
           )
         })}
+        </div>
       </div>
 
       <div className="mt-3 text-xs text-muted-foreground text-center">
