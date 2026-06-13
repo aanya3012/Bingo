@@ -8,6 +8,10 @@ const inter = Inter({ subsets: ["latin"] })
 export const metadata: Metadata = {
   title: "BINGO — Multiplayer Number Game",
   description: "Play the classic Indian 1–25 Bingo game online with up to 8 friends in real time.",
+  
+  verification: {
+    google: "siBk9Bq4hyikECeBDths9WLgy1Rur7x7kPKNeFAV9S4", },
+
   openGraph: {
     title: "BINGO — Multiplayer Number Game",
     description: "Play the classic Indian 1–25 Bingo game with friends",
